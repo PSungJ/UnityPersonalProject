@@ -679,8 +679,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Infinity_Stair
-  metroPackageVersion: 
+  metroPackageName: InfinityStair
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -688,7 +688,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Infinity_Stair
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Infinity_Stair
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

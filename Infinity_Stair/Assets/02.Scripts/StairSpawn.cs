@@ -13,31 +13,43 @@ public class StairSpawn : MonoBehaviour
     private enum State { START, LEFT, RIGHT };
     private State state;
     private Vector2 oldPos;
-    void Start()
+    
+    public bool[] isTurn;
+    public void Start()
     {
         Init();
         SpawnStair();
     }
-    private void Init()
+    public void Init()
     {
         state = State.START;
         oldPos = Vector3.zero;
+
+        isTurn = new bool[StairsPooling.p_Instance.stairPool.Count];
+
+        for (int i = 0; i < StairsPooling.p_Instance.stairPool.Count; i++)
+        {
+            StairsPooling.p_Instance.stairPool[i].transform.position = Vector3.zero;
+            isTurn[i] = false;
+        }
     }
-    private void SpawnStair()
+    public void SpawnStair()
     {
         for (int i = 0; i < StairsPooling.p_Instance.stairPool.Count; i++)
         {
             switch (state)
             {
                 case State.START:
-                    StairsPooling.p_Instance.stairPool[i].transform.position = new Vector2(0.75f, -0.1f);
+                    StairsPooling.p_Instance.stairPool[i].transform.position = new Vector2(stairStepX, -0.1f);
                     state = State.RIGHT;
                     break;
                 case State.LEFT:
-                    StairsPooling.p_Instance.stairPool[i].transform.position = oldPos + new Vector2(-0.75f, 0.5f);
+                    StairsPooling.p_Instance.stairPool[i].transform.position = oldPos + new Vector2(-stairStepX, stairStepY);
+                    isTurn[i] = true;
                     break;
                 case State.RIGHT:
-                    StairsPooling.p_Instance.stairPool[i].transform.position = oldPos + new Vector2(0.75f, 0.5f);
+                    StairsPooling.p_Instance.stairPool[i].transform.position = oldPos + new Vector2(stairStepX, stairStepY);
+                    isTurn[i] = false;
                     break;
             }
             oldPos = StairsPooling.p_Instance.stairPool[i].transform.position;
@@ -52,5 +64,27 @@ public class StairSpawn : MonoBehaviour
                 }
             }
         }
+    }
+    public void RespawnStairs(int cnt)
+    {
+        int ran = Random.Range(0, 5);
+
+        if (ran < 2)
+        {
+            state = state == State.LEFT ? State.RIGHT : State.LEFT;
+        }
+
+        switch (state)
+        {
+            case State.LEFT:
+                StairsPooling.p_Instance.stairPool[cnt].transform.position = oldPos + new Vector2(-stairStepX, stairStepY);
+                isTurn[cnt] = true;
+                break;
+            case State.RIGHT:
+                StairsPooling.p_Instance.stairPool[cnt].transform.position = oldPos + new Vector2(stairStepX, stairStepY);
+                isTurn[cnt] = false;
+                break;
+        }
+        oldPos = StairsPooling.p_Instance.stairPool[cnt].transform.position;
     }
 }
