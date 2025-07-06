@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     private bool isTurn = false;
     private bool isDie = false;
 
+    private AudioSource source;
+
     private int spawnCnt = 0;   // 새로 생성되는 계단 카운트
 
     [SerializeField] private StairSpawn spawn;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        source = GetComponent<AudioSource>();
         startPos = transform.position;
         oldPos = transform.localPosition;
         isDie = false;
@@ -30,7 +33,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (isDie) return;
+        PcTest();
+    }
 
+    private void PcTest()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             CharMove();
@@ -39,10 +46,12 @@ public class Player : MonoBehaviour
         {
             CharTurn();
         }
-        
     }
-    private void CharMove()
+
+    public void CharMove()
     {
+        if (isDie) return;
+        source.Play();
         MoveDirection();
         moveCnt++;
 
@@ -53,14 +62,17 @@ public class Player : MonoBehaviour
 
         if (moveCnt > 5)
             NewStair();
+        GameManager.gameInstance.AddScore();
     }
-    private void CharTurn()
+    public void CharTurn()
     {
+        if (isDie) return;
         isTurn = isTurn == true ? false : true;
         sprite.flipX = isTurn;
     }
     private void Die()
     {
+        GameManager.gameInstance.GameOver();
         ani.SetTrigger("Dead");
         isDie = true;
     }

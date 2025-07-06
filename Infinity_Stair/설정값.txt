@@ -1,0 +1,3 @@
+BGM : Track8
+Move : 029_Decline_09
+Die : 070_Equip_10
