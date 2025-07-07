@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class BGMove : MonoBehaviour
 {
-    [SerializeField] BoxCollider2D box2D;
     private float height;
-    private Transform tr;
+    private Transform thisPos;
+    public Transform otherPos;
+    public Transform playerTr;
+    private BoxCollider2D box2D;
 
     void Awake()
     {
-        tr = transform;
         box2D = GetComponent<BoxCollider2D>();
         height = box2D.size.y;
+        thisPos = transform;
     }
 
     void Update()
     {
-        if (tr.position.y <= -height)
+        if (playerTr.position.y > thisPos.position.y + height)
         {
-            Vector2 offset = new Vector2(0, height * 2f);
-            tr.position = (Vector2)tr.position + offset;
+            Vector2 newPosition = new Vector2(thisPos.position.x, otherPos.position.y + height);
+            thisPos.position = newPosition;
         }
+        //if (thisPos.position.y >= playerTr.position.y + height)
+        //    return;
+        //if (playerTr.position.y >= lastPlayerYPos + moveDistance)
+        //{
+        //    Vector2 offset = new Vector2(0, height * 2f);
+        //    thisPos.position = (Vector2)thisPos.position + offset;
+        //    lastPlayerYPos = playerTr.position.y;
+        //}
     }
 }

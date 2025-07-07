@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 281180207}
   - component: {fileID: 281180210}
   - component: {fileID: 281180209}
-  - component: {fileID: 281180208}
+  - component: {fileID: 281180211}
   m_Layer: 0
   m_Name: Sky_0 (1)
   m_TagString: Untagged
@@ -235,19 +235,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2000435366}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &281180208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 281180206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc8177b36566f5b438ac8330fedc9e22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  box2D: {fileID: 0}
 --- !u!61 &281180209
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -277,7 +264,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -345,6 +332,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &281180211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281180206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc8177b36566f5b438ac8330fedc9e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  otherPos: {fileID: 1088735532}
+  playerTr: {fileID: 1334356047}
 --- !u!1 &318111471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,7 +1519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8177b36566f5b438ac8330fedc9e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  box2D: {fileID: 0}
+  otherPos: {fileID: 281180207}
+  playerTr: {fileID: 1334356047}
 --- !u!61 &1088735534
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1548,7 +1550,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
