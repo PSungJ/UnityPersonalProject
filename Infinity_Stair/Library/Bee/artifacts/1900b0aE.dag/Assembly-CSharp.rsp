@@ -341,6 +341,7 @@
 "Assets/02.Scripts/Player.cs"
 "Assets/02.Scripts/StairSpawn.cs"
 "Assets/02.Scripts/StairsPooling.cs"
+"Assets/02.Scripts/UIScript.cs"
 -langversion:9.0
 /deterministic
 /optimize+

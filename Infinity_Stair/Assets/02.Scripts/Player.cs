@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private bool isDie = false;
 
     private AudioSource source;
+    public AudioClip moveClip;
+    public AudioClip dieClip;
 
     private int spawnCnt = 0;   // 새로 생성되는 계단 카운트
 
@@ -51,7 +53,7 @@ public class Player : MonoBehaviour
     public void CharMove()
     {
         if (isDie) return;
-        source.Play();
+        source.PlayOneShot(moveClip);
         MoveDirection();
         moveCnt++;
 
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
     {
         GameManager.gameInstance.GameOver();
         ani.SetTrigger("Dead");
+        source.PlayOneShot(dieClip);
         isDie = true;
     }
 

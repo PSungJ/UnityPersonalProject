@@ -7,62 +7,104 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameInstance;
+    
+    private const string HIGHSCORE_KEY = "HighScore";   // PlayerPrefs에 최고점수를 저장
 
-    public Text score;
+    public UIScript hpBar;
+    public Text scoreText;
     public Text textMaxScore;
     public Text textCurScore;
     public GameObject gameOverUI;
+    public GameObject upButton;
+    public GameObject turnButton;
     public bool isGameOver = false;
     private int curScore = 0;
-    private int maxScore = 0;
     [Header("Audio")]
-    private AudioSource source;
+    private AudioSource sound;
     public AudioClip BgmClip;
-    public AudioClip DieClip;
 
-    void Awake()
+    void Start()
     {
         if (gameInstance == null)
             gameInstance = this;
         else if (gameInstance != this)
         {
-            Debug.LogWarning("씬에 두개 이상의 게임매니저가 존재합니다.");
             Destroy(gameObject);
         }
-        source = GetComponent<AudioSource>();
-        curScore = 0;
-        score.text = curScore.ToString();
-        gameOverUI.SetActive(false);
-        source.clip = BgmClip;
-        source.Play();
-        source.loop = true;
+        Initialized();
     }
+
+    private void Initialized()
+    {
+        sound = GetComponent<AudioSource>();
+        curScore = 0;
+        if (textCurScore != null)
+            scoreText.text = curScore.ToString();
+        LoadHighScore();
+        gameOverUI.SetActive(false);
+        upButton.SetActive(true);
+        turnButton.SetActive(true);
+        sound.PlayOneShot(BgmClip);
+        sound.loop = true;
+        sound.volume = 0.5f;
+    }
+
     public void GameOver()
     {
-        source.loop = false;
-        source.Stop();
-        source.clip = DieClip;
-        source.Play();
-        StartCoroutine(ShowGameOver());
+        Die();
+        SaveGame();
+        DisplayScores();
     }
-    IEnumerator ShowGameOver()
+
+    public void Die()
+    {
+        sound.loop = false;
+        sound.Stop();
+        upButton.SetActive(false);
+        turnButton.SetActive(false);
+        hpBar.hpSlider.value = hpBar.curHp;
+    }
+
+    private void SaveGame()
+    {
+        int savedHighScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);  // 이전에 저장된 최고점수 불러오기
+        if (curScore > savedHighScore)  // 현재 점수가 이전에 저장된 최고점수보다 높다면 현재점수로 갱신
+        {
+            PlayerPrefs.SetInt(HIGHSCORE_KEY, curScore);
+            PlayerPrefs.Save();
+        }
+    }
+
+    private void DisplayScores()
     {
         isGameOver = true;
-        yield return new WaitForSeconds(0.3f);
         gameOverUI.SetActive(true);
-        if (curScore > maxScore)
+        if (textCurScore != null)
         {
-            maxScore = curScore;
+            textCurScore.text = $"<color=#000000>Score : {curScore.ToString()}</color>";
         }
-        textMaxScore.text = $"<color=#00FF00>Best Score : {maxScore.ToString()}</color>";
-        textCurScore.text = $"<color=#000000>Score : {curScore.ToString()}</color>";
+        if (textMaxScore != null)
+        {
+            int finalHighScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);
+            textMaxScore.text = $"<color=#00FF00>Best Score : {finalHighScore.ToString()}</color>";
+        }
+    }
+    private void LoadHighScore()
+    {
+        int loadedHighScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);         // 초기에 로드되는 최고점수
+        if (textMaxScore != null)
+        {
+            textMaxScore.text = "최고 점수: " + loadedHighScore.ToString();
+        }
     }
     public void AddScore()
     {
+        if (isGameOver)
+            return;
         curScore++;
-        score.text = curScore.ToString();
+        scoreText.text = curScore.ToString();
+        hpBar.RecoverHp();
     }
-
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
