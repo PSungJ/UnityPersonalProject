@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene("InfinityStair");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         isGameOver = false;
     }
     public void ExitGame()
