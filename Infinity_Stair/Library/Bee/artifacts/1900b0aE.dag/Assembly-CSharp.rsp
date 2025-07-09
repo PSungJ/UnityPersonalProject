@@ -338,6 +338,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.61f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/02.Scripts/BGMove.cs"
 "Assets/02.Scripts/GameManager.cs"
+"Assets/02.Scripts/MenuControl.cs"
 "Assets/02.Scripts/Player.cs"
 "Assets/02.Scripts/StairSpawn.cs"
 "Assets/02.Scripts/StairsPooling.cs"

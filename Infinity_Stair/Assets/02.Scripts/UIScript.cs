@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    public static UIScript ui_Instance;
+
     public Slider hpSlider; // HpBar Slider UI
     public float maxHP = 100f;
     public float curHp;
@@ -12,6 +14,17 @@ public class UIScript : MonoBehaviour
     public float hpRecover = 5f; // Hp 회복량
 
     void Awake()
+    {
+        if (ui_Instance == null)
+            ui_Instance = this;
+        else if (ui_Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        Initialized();
+    }
+
+    private void Initialized()
     {
         curHp = maxHP;
         if (hpSlider != null)
@@ -23,12 +36,16 @@ public class UIScript : MonoBehaviour
 
     void Update()
     {
+        Dead();
+    }
+
+    public void Dead()
+    {
         DecreaseHpBar();
         if (curHp <= 0)
         {
             curHp = 0;      // Hp 0으로 고정
             UpdateHpBar();  // HpBar 업데이트
-            GameManager.gameInstance.Die(); // 게임매니저의 Die 호출
         }
     }
 

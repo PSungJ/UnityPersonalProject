@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     private int spawnCnt = 0;   // 새로 생성되는 계단 카운트
 
     [SerializeField] private StairSpawn spawn;
+    [SerializeField] private MenuControl menu;
+    [SerializeField] private UIScript hpBarUI;
     void Start()
     {
         ani = GetComponent<Animator>();
@@ -34,8 +36,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (isDie) return;
+        if (isDie || menu.isPause) return;
         PcTest();
+        zeroHP();
     }
 
     private void PcTest()
@@ -52,32 +55,43 @@ public class Player : MonoBehaviour
 
     public void CharMove()
     {
-        if (isDie) return;
+        if (isDie || menu.isPause) return;
+
+        if (isFail(false)) // 잘못된 방향으로 가거나 Hp가 0이하가 되면 사망
+        {
+            Debug.Log("사망");
+            Die();
+        }
         source.PlayOneShot(moveClip);
         MoveDirection();
         moveCnt++;
-
-        if (isFail()) // 잘못된 방향으로 갈 시 사망
-        {
-            Die();
-        }
-
         if (moveCnt > 5)
             NewStair();
+        
         GameManager.gameInstance.AddScore();
     }
+
     public void CharTurn()
     {
-        if (isDie) return;
+        if (isDie || menu.isPause) return;
         isTurn = isTurn == true ? false : true;
         sprite.flipX = isTurn;
     }
-    private void Die()
+
+    public void Die()
     {
         GameManager.gameInstance.GameOver();
         ani.SetTrigger("Dead");
         source.PlayOneShot(dieClip);
         isDie = true;
+    }
+
+    public void zeroHP()
+    {
+        if (UIScript.ui_Instance.curHp == 0)
+        {
+            Die();
+        }
     }
 
     private void MoveDirection()
@@ -93,7 +107,7 @@ public class Player : MonoBehaviour
         transform.position = oldPos;
         ani.SetTrigger("Move");
     }
-    private bool isFail()
+    public bool isFail(bool playerTurn)
     {
         bool result = false;
         if (spawn.isTurn[turnCnt] != isTurn)

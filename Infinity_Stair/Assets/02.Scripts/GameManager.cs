@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     private int curScore = 0;
     [Header("Audio")]
-    private AudioSource sound;
+    public AudioSource sound;
     public AudioClip BgmClip;
 
     void Start()
